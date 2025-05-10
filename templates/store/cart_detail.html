@@ -1,0 +1,76 @@
+{% extends 'base.html' %} {% block title %}Shopping Cart - GJX Store
+{% endblock %} {% block content %}
+<h1 class="mb-4">Shopping Cart</h1>
+
+{% if cart.items.all %}
+<div class="table-responsive">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Total</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in cart.items.all %}
+      <tr>
+        <td>
+          <div class="d-flex align-items-center">
+            {% if item.product.image %}
+            <img
+              src="{{ item.product.image.url }}"
+              alt="{{ item.product.name }}"
+              class="img-thumbnail me-3"
+              style="width: 50px"
+            />
+            {% endif %}
+            <div>
+              <h6 class="mb-0">{{ item.product.name }}</h6>
+              <small class="text-muted">{{ item.product.category.name }}</small>
+            </div>
+          </div>
+        </td>
+        <td>${{ item.product.price }}</td>
+        <td>{{ item.quantity }}</td>
+        <td>${{ item.get_cost }}</td>
+        <td>
+          <a
+            href="{% url 'store:remove_from_cart' item.id %}"
+            class="btn btn-danger btn-sm"
+          >
+            <i class="bi bi-trash"></i> Remove
+          </a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="3" class="text-end"><strong>Total:</strong></td>
+        <td><strong>${{ cart.get_total_price }}</strong></td>
+        <td></td>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+
+<div class="d-flex justify-content-between mt-4">
+  <a href="{% url 'store:product_list' %}" class="btn btn-outline-primary">
+    <i class="bi bi-arrow-left"></i> Continue Shopping
+  </a>
+  <a href="{% url 'store:checkout' %}" class="btn btn-success">
+    <i class="bi bi-credit-card"></i> Proceed to Checkout
+  </a>
+</div>
+{% else %}
+<div class="text-center py-5">
+  <h3 class="text-muted">Your cart is empty</h3>
+  <p class="mb-4">Add some products to your cart to continue shopping.</p>
+  <a href="{% url 'store:product_list' %}" class="btn btn-primary">
+    <i class="bi bi-arrow-left"></i> Browse Products
+  </a>
+</div>
+{% endif %} {% endblock %}

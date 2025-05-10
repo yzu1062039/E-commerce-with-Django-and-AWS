@@ -1,0 +1,51 @@
+{% extends 'base.html' %} {% block title %}Order History - GJX Store
+{% endblock %} {% block content %}
+<h1 class="mb-4">Order History</h1>
+
+{% if orders %}
+<div class="table-responsive">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Order #</th>
+        <th>Date</th>
+        <th>Status</th>
+        <th>Total</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for order in orders %}
+      <tr>
+        <td>#{{ order.id }}</td>
+        <td>{{ order.created|date:"F j, Y" }}</td>
+        <td>
+          <span
+            class="badge {% if order.status == 'delivered' %}bg-success {% elif order.status == 'shipped' %}bg-info {% elif order.status == 'processing' %}bg-warning {% else %}bg-secondary{% endif %}"
+          >
+            {{ order.get_status_display }}
+          </span>
+        </td>
+        <td>${{ order.get_total_cost }}</td>
+        <td>
+          <a
+            href="{% url 'store:order_confirmation' order.id %}"
+            class="btn btn-sm btn-outline-primary"
+          >
+            View Details
+          </a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<div class="text-center py-5">
+  <h3 class="text-muted">No orders found</h3>
+  <p class="mb-4">You haven't placed any orders yet.</p>
+  <a href="{% url 'store:product_list' %}" class="btn btn-primary">
+    <i class="bi bi-arrow-left"></i> Start Shopping
+  </a>
+</div>
+{% endif %} {% endblock %}
