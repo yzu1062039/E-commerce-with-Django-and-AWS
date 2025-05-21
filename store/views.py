@@ -82,7 +82,9 @@ def add_to_cart(request, product_id):
         cart_item.save()
 
     messages.success(request, f'{product.name} added to cart.')
-    return redirect('store:cart_detail')
+    # Get the previous page URL from the HTTP_REFERER header
+    previous_page = request.META.get('HTTP_REFERER', 'store:product_list')
+    return redirect(previous_page)
 
 # Remove item from cart view
 
@@ -200,3 +202,22 @@ class CustomLoginView(LoginView):
     def form_invalid(self, form):
         messages.error(self.request, 'Invalid username or password.')
         return super().form_invalid(form)
+
+
+@login_required
+def update_cart_item(request, item_id):
+    cart_item = get_object_or_404(
+        CartItem, id=item_id, cart__user=request.user)
+    quantity = int(request.POST.get('quantity', 1))
+
+    # Ensure quantity is within valid range
+    if quantity < 1:
+        quantity = 1
+    elif quantity > cart_item.product.stock:
+        quantity = cart_item.product.stock
+        messages.warning(request, f'Maximum available stock is {quantity}')
+
+    cart_item.quantity = quantity
+    cart_item.save()
+    messages.success(request, f'Quantity updated for {cart_item.product.name}')
+    return redirect('store:cart_detail')
