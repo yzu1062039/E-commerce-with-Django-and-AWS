@@ -13,10 +13,6 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 from pathlib import Path
 from dotenv import load_dotenv
-import boto3
-from botocore.exceptions import ClientError
-import ast
-
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -32,10 +28,10 @@ load_dotenv(env_path)
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'k-zr_44u17778%pt=fx&+*fh&8n-y11x=(6z6)rpo^qc+&&'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = ['*']  # Allow all hosts for development
 
@@ -99,11 +95,11 @@ WSGI_APPLICATION = 'ecommerce.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'ecommerce_db',
-        'USER': 'wataame',
-        'PASSWORD': 'Zxdfascv0513',
-        'HOST': 'database-1.czssgkwksoun.ap-southeast-2.rds.amazonaws.com',
-        'PORT': '5432',
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT', '5432'),
     }
 }
 
@@ -152,15 +148,15 @@ MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # AWS S3 Configuration
-AWS_ACCESS_KEY_ID = 'AKIAXZ54I5SZYSKT34AJ'
-AWS_SECRET_ACCESS_KEY = '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'
-AWS_STORAGE_BUCKET_NAME = 'django-gjx-store'
-AWS_S3_REGION_NAME = 'ap-southeast-2'
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = os.environ.get(
+    'AWS_STORAGE_BUCKET_NAME', 'django-gjx-store')
+AWS_S3_REGION_NAME = os.environ.get('AWS_S3_REGION_NAME', 'ap-southeast-2')
 AWS_S3_FILE_OVERWRITE = False
 AWS_DEFAULT_ACL = None
 AWS_S3_VERIFY = True
 AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
-
 
 
 STORAGES = {
