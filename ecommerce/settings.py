@@ -17,6 +17,7 @@ import boto3
 from botocore.exceptions import ClientError
 import ast
 
+
 def get_secret():
 
     secret_name = "gjxstoreenv"
