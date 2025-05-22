@@ -59,10 +59,10 @@ load_dotenv(env_path)
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = secret['SECRET_KEY']
+SECRET_KEY = 'k-zr_44u17778%pt=fx&+*fh&8n-y11x=(6z6)rpo^qc+&&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = secret['DEBUG']
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']  # Allow all hosts for development
 
@@ -126,11 +126,11 @@ WSGI_APPLICATION = 'ecommerce.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': secret['DB_NAME'],
-        'USER': secret['DB_USER'],
-        'PASSWORD': secret['DB_PASSWORD'],
-        'HOST': secret['DB_HOST'],
-        'PORT': secret['DB_PORT'],
+        'NAME': 'ecommerce_db',
+        'USER': 'wataame',
+        'PASSWORD': 'Zxdfascv0513',
+        'HOST': 'database-1.czssgkwksoun.ap-southeast-2.rds.amazonaws.com',
+        'PORT': '5432',
     }
 }
 
@@ -179,10 +179,10 @@ MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # AWS S3 Configuration
-AWS_ACCESS_KEY_ID = secret['AWS_ACCESS_KEY_ID']
-AWS_SECRET_ACCESS_KEY = secret['AWS_SECRET_ACCESS_KEY']
-AWS_STORAGE_BUCKET_NAME = secret['AWS_STORAGE_BUCKET_NAME']
-AWS_S3_REGION_NAME = secret['AWS_S3_REGION_NAME']
+AWS_ACCESS_KEY_ID = 'AKIAXZ54I5SZZNFRLQPQ'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'django-gjx-store'
+AWS_S3_REGION_NAME = 'ap-southeast-2'
 AWS_S3_FILE_OVERWRITE = False
 AWS_DEFAULT_ACL = None
 AWS_S3_VERIFY = True
