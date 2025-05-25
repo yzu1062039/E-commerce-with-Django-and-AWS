@@ -58,12 +58,6 @@ footer {
   border-color: #0a58ca;
 }
 
-/* Alert Styles */
-.alert {
-  border-radius: 0.25rem;
-  margin-bottom: 1rem;
-}
-
 /* Table Styles */
 .table th {
   background-color: #f8f9fa;
@@ -89,8 +83,10 @@ footer {
     height: 40px;
   }
 }
-
+/* Alert Styles */
 .alert {
+    border-radius: 0.25rem;
+    margin-bottom: 1rem;
     position: fixed;
     top: 20px;
     right: 20px;
