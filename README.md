@@ -1,13 +1,13 @@
 # Django E-commerce Project
 
-A simple E-commerce website built with Django and depoly with AWS.
+A simple E-commerce website built with Django and deployed with AWS.
 
 Demo Link: <https://gjxstore.com/>
 
 ## Features
 
 - User authentication (Register, Login, Logout)
-- Product catalog
+- Product Catalog
 - Shopping cart functionality
 - Product categories
 - Basic checkout process
