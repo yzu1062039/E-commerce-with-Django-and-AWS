@@ -1,5 +1,5 @@
-{% extends 'base.html' %} {% block title %} {% if category %}{{ category.name
-}}{% else %}All Products{% endif %} - GJX Store {% endblock %} 
+{% extends 'base.html' %} {% block title %} {% if category %} {{category.name}} 
+{% else %}All Products{% endif %} - GJX Store {% endblock %} 
 {% block content %}
 <h1 class="mb-4">
   {% if category %} {{ category.name }} {% else %} All Products {% endif %}

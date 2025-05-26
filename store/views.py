@@ -1,10 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth import login, logout
 from django.contrib.auth.views import LoginView
 from django.urls import reverse_lazy
-from .models import Category, Product, Cart, CartItem, Order, OrderItem, CustomUser
+from .models import Category, Product, Cart, CartItem, Order, OrderItem
 from .forms import CustomUserCreationForm, UserProfileForm
 from django.db.models import Q
 
@@ -63,7 +63,7 @@ def product_detail(request, slug):
 
 @login_required
 def cart_detail(request):
-    cart, created = Cart.objects.get_or_create(user=request.user)
+    cart = Cart.objects.get_or_create(user=request.user)
     return render(request, 'store/cart_detail.html', {'cart': cart})
 
 # Add item to cart view

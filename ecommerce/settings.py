@@ -13,9 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 from pathlib import Path
 from dotenv import load_dotenv
-import boto3
-from botocore.exceptions import ClientError
-import ast
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,43 +25,17 @@ env_path = os.path.join(BASE_DIR, '.env')
 load_dotenv(env_path)
 
 
-def get_secret():
-
-    secret_name = "gjxstoreenv"
-    region_name = "us-east-1"
-
-    # Create a Secrets Manager client
-    session = boto3.session.Session()
-    client = session.client(
-        service_name='secretsmanager',
-        region_name=region_name
-    )
-
-    try:
-        get_secret_value_response = client.get_secret_value(
-            SecretId=secret_name
-        )
-    except ClientError as e:
-        # For a list of exceptions thrown, see
-        # https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
-        raise e
-
-    secret = get_secret_value_response['SecretString']
-    return secret
-
-
-secret = ast.literal_eval(get_secret())
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = secret['SECRET_KEY']
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
 ALLOWED_HOSTS = ['*']  # Allow all hosts for development
+
 
 
 # Application definition
@@ -125,11 +97,11 @@ WSGI_APPLICATION = 'ecommerce.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': secret['DB_NAME'],
-        'USER': secret['DB_USER'],
-        'PASSWORD': secret['DB_PASSWORD'],
-        'HOST': secret['DB_HOST'],
-        'PORT': secret['DB_PORT'],
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT'),
     }
 }
 
@@ -178,14 +150,18 @@ MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # AWS S3 Configuration
-AWS_ACCESS_KEY_ID = secret['AWS_ACCESS_KEY_ID']
-AWS_SECRET_ACCESS_KEY = secret['AWS_SECRET_ACCESS_KEY']
-AWS_STORAGE_BUCKET_NAME = secret['AWS_STORAGE_BUCKET_NAME']
-AWS_S3_REGION_NAME = secret['AWS_S3_REGION_NAME']
+AWS_ACCESS_KEY_ID = "AWS_ACCESS_KEY_ID"
+AWS_SECRET_ACCESS_KEY = "AWS_SECRET_ACCESS_KEY"
+AWS_STORAGE_BUCKET_NAME = "AWS_STORAGE_BUCKET_NAME"
+AWS_S3_REGION_NAME = "AWS_S3_REGION_NAME"
 AWS_S3_FILE_OVERWRITE = False
 AWS_DEFAULT_ACL = None
 AWS_S3_VERIFY = True
 AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+AWS_QUERYSTRING_AUTH = False
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
 
 
 STORAGES = {
